@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" role="img" aria-labelledby="title desc">
+  <title>HUMAN sample 13</title>
+  <desc>Generated human placeholder image</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f472b6" />
+      <stop offset="100%" stop-color="#fb923c" />
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.28)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+    </radialGradient>
+  </defs>
+  <rect width="300" height="300" rx="34" fill="url(#bg)" />
+  <rect width="300" height="300" rx="34" fill="#261012" opacity="0.5" />
+  <circle cx="150" cy="120" r="120" fill="url(#glow)" opacity="0.7" />
+  <g opacity="0.95">
+    
+      <path d="M38 196 C74 122 112 122 146 166 C178 208 218 208 262 138" stroke="rgba(255,255,255,0.34)" stroke-width="7" fill="none" stroke-linecap="round" />
+      <circle cx="84" cy="88" r="30" fill="rgba(255,255,255,0.12)" />
+      <path d="M178 70 C214 52 250 90 244 130 C238 168 198 188 166 172 C140 160 136 102 178 70Z" fill="rgba(255,255,255,0.1)" />
+      <circle cx="208" cy="176" r="16" fill="#ffffff" opacity="0.78" />
+    
+  </g>
+  <g opacity="0.14">
+    <circle cx="42" cy="42" r="10" fill="#fff" />
+    <circle cx="260" cy="42" r="8" fill="#fff" />
+    <circle cx="42" cy="258" r="8" fill="#fff" />
+    <circle cx="260" cy="258" r="10" fill="#fff" />
+  </g>
+</svg>
