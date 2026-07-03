@@ -5,9 +5,8 @@ coverage
 .env
 .env.local
 .env.*.local
-data/*.db
-data/*.sqlite
-data/*.sqlite3
+data/*.db*
+data/*.sqlite*
 public/dataset/manifest.json
 *.log
 *.tsbuildinfo
