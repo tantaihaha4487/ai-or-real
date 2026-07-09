@@ -5,10 +5,10 @@ import type { LeaderboardRow } from '@/db/queries'
 
 export function LeaderboardTable({ rows }: { rows: LeaderboardRow[] }) {
   return (
-    <Card className='border-white/10 bg-slate-950/70'>
+    <Card className='border-white/10 bg-slate-950/[0.68]'>
       <CardContent className='p-0'>
-        <div className='overflow-hidden rounded-3xl'>
-          <table className='w-full border-collapse text-left'>
+        <div className='overflow-x-auto rounded-[1.75rem]'>
+          <table className='min-w-[44rem] w-full border-collapse text-left'>
             <thead className='bg-white/5 text-xs uppercase tracking-[0.24em] text-slate-400'>
               <tr>
                 <th className='px-4 py-4'>#</th>
@@ -21,7 +21,7 @@ export function LeaderboardTable({ rows }: { rows: LeaderboardRow[] }) {
             </thead>
             <tbody>
               {rows.map((row, index) => (
-                <tr key={row.runId} className='border-t border-white/10'>
+                <tr key={row.runId} className='border-t border-white/10 hover:bg-white/[0.03]'>
                   <td className='px-4 py-4 font-mono text-slate-400'>{index + 1}</td>
                   <td className='px-4 py-4 font-semibold text-white'>{row.playerName}</td>
                   <td className='px-4 py-4 font-mono text-cyan-200'>{row.score}</td>

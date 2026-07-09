@@ -4,9 +4,9 @@ import { Button } from '@/components/ui/button'
 
 export function LeaderboardTabs({ current }: { current: 'all' | 'today' | 'week' }) {
   const tabs: Array<{ key: 'all' | 'today' | 'week'; label: string }> = [
-    { key: 'all', label: 'All Time' },
-    { key: 'today', label: 'Today' },
-    { key: 'week', label: 'This Week' },
+    { key: 'all', label: 'ทั้งหมด' },
+    { key: 'today', label: 'วันนี้' },
+    { key: 'week', label: 'สัปดาห์นี้' },
   ]
 
   return (

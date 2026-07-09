@@ -14,13 +14,13 @@ export default function LeaderboardPage({ searchParams }: { searchParams: { rang
   const rows = getLeaderboard(range)
 
   return (
-    <main className='mx-auto min-h-screen max-w-7xl px-4 py-6 sm:px-6 lg:px-8'>
-      <Card className='border-white/10 bg-slate-950/70'>
+    <main className='app-grid min-h-screen px-4 py-6 sm:px-6 lg:px-8'>
+      <Card className='mx-auto max-w-7xl border-cyan-100/10 bg-slate-950/[0.68]'>
         <CardHeader className='space-y-4'>
           <div className='flex flex-wrap items-center justify-between gap-3'>
             <div>
-              <Badge className='w-fit'>Leaderboard</Badge>
-              <CardTitle className='mt-3 text-4xl'>ตารางคะแนน</CardTitle>
+              <Badge className='w-fit bg-cyan-300/[0.12] text-cyan-100'>Leaderboard</Badge>
+              <CardTitle className='mt-3 text-4xl sm:text-5xl'>ตารางคะแนน</CardTitle>
               <CardDescription>จัดอันดับตามคะแนนสูงสุด</CardDescription>
             </div>
             <Button variant='outline' asChild>

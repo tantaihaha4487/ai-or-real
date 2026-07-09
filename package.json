@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --hostname 0.0.0.0",
     "build": "npm run seed:dataset && npm run seed:manifest && next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",

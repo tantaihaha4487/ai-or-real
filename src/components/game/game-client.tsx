@@ -12,12 +12,11 @@ import { RoundFeedback } from '@/components/game/round-feedback'
 import { StreakToast } from '@/components/game/streak-toast'
 import { TimerBar } from '@/components/game/timer-bar'
 import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { useGameState } from '@/hooks/useGameState'
 import type { DatasetItem } from '@/lib/dataset-types'
-import { formatMs, formatSeconds } from '@/lib/utils'
+import { formatMs } from '@/lib/utils'
 import { createSoundPlayer } from '@/lib/sounds'
 import { summarizeRounds, type RoundResult } from '@/lib/scoring'
 
@@ -203,53 +202,56 @@ export function GameClient({ playerName, rounds }: { playerName: string; rounds:
   const currentRound = state.rounds[state.roundIndex]
   const imageLabel = currentRound ? `ภาพ ${state.roundIndex + 1}/${state.rounds.length}` : ''
   const answerLabel = currentRound ? (currentRound.category === 'ai' ? 'AI' : 'HUMAN') : ''
+  const summary = summarizeRounds(state.results)
+  const phaseLabel = state.phase === 'playing' ? 'กำลังเล่น' : state.phase === 'countdown' ? 'นับถอยหลัง' : state.phase === 'feedback' ? 'เฉลย' : 'โหลด'
+  const currentRoundNumber = Math.min(state.roundIndex + 1, rounds.length)
 
   return (
-    <main className='min-h-screen px-4 py-4 sm:px-6 lg:px-8'>
-      <div className='mx-auto flex min-h-[calc(100vh-2rem)] max-w-6xl flex-col gap-4'>
-        <Card className='border-white/10 bg-slate-950/70'>
-          <CardContent className='flex flex-col gap-4 p-4 sm:p-6 lg:flex-row lg:items-center lg:justify-between'>
-            <div>
-              <div className='text-sm uppercase tracking-[0.28em] text-cyan-200/80'>ผู้เล่น</div>
-              <div className='text-2xl font-bold text-white'>{playerName}</div>
+    <main className='app-grid h-svh overflow-hidden px-3 py-3 sm:px-5 lg:px-8'>
+      <div className='mx-auto flex h-full max-w-7xl flex-col gap-2 sm:gap-3'>
+        <Card className='border-cyan-100/10 bg-slate-950/[0.62]'>
+          <CardContent className='grid gap-2 p-2 sm:grid-cols-2 sm:p-3 lg:grid-cols-[1.25fr_repeat(4,minmax(0,0.62fr))]'>
+            <div className='flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2 sm:col-span-2 lg:col-span-1'>
+              <div>
+                <div className='text-xs uppercase tracking-[0.28em] text-cyan-200/75'>ผู้เล่น</div>
+                <div className='text-lg font-bold text-white sm:text-xl'>{playerName}</div>
+              </div>
+              <Badge className='bg-cyan-300/[0.12] text-cyan-100'>รอบ {currentRoundNumber}/{rounds.length}</Badge>
             </div>
-            <div className='grid gap-4 sm:grid-cols-3 lg:min-w-[44rem] lg:flex lg:items-center lg:justify-end'>
-              <div className='rounded-2xl border border-white/10 bg-white/5 px-4 py-3'>
-                <div className='text-xs uppercase tracking-[0.24em] text-slate-400'>คะแนน</div>
-                <div className='font-mono text-3xl font-black text-cyan-200'>{state.score}</div>
-              </div>
-              <div className='rounded-2xl border border-white/10 bg-white/5 px-4 py-3'>
-                <div className='text-xs uppercase tracking-[0.24em] text-slate-400'>หัวใจ</div>
-                <HeartsDisplay hearts={state.hearts} />
-              </div>
-              <div className='rounded-2xl border border-white/10 bg-white/5 px-4 py-3'>
-                <div className='text-xs uppercase tracking-[0.24em] text-slate-400'>คอมโบ</div>
-                <div className='font-mono text-3xl font-black text-violet-200'>{state.streak}x</div>
-              </div>
+            <HudStat label='คะแนน' value={state.score} tone='text-cyan-100' />
+            <div className='rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3'>
+              <div className='text-xs uppercase tracking-[0.24em] text-slate-400'>หัวใจ</div>
+              <div className='mt-1'><HeartsDisplay hearts={state.hearts} /></div>
             </div>
+            <HudStat label='คอมโบ' value={`${state.streak}x`} tone='text-violet-100' />
+            <HudStat label='เฉลี่ย' value={`${formatMs(summary.averageResponseMs)} ms`} tone='text-slate-100' compact />
           </CardContent>
         </Card>
 
-        <div className='grid gap-4 lg:grid-cols-[1.15fr_0.85fr]'>
-          <Card className='relative overflow-hidden border-white/10 bg-slate-950/65'>
-            <CardHeader className='flex-row items-center justify-between pb-0'>
-              <CardTitle className='font-mono text-sm uppercase tracking-[0.28em] text-cyan-200/80'>
-                รอบ {Math.min(state.roundIndex + 1, rounds.length)}/{rounds.length}
-              </CardTitle>
-              <Badge>{state.phase === 'playing' ? 'กำลังเล่น' : state.phase === 'countdown' ? 'นับถอยหลัง' : state.phase === 'feedback' ? 'เฉลย' : 'โหลด'}</Badge>
-            </CardHeader>
-            <CardContent className='space-y-5 p-4 sm:p-6'>
+        <Card className='relative flex min-h-0 flex-1 overflow-hidden border-cyan-100/10 bg-slate-950/[0.72]'>
+          <div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.12),transparent_38%)]' />
+          <CardContent className='relative flex min-h-0 flex-1 flex-col gap-2 p-2 sm:gap-3 sm:p-3 lg:p-4'>
+            <div className='flex shrink-0 flex-wrap items-center justify-between gap-2'>
+              <div>
+                <CardTitle className='text-lg sm:text-xl'>ดูภาพให้ชัด แล้วเลือกคำตอบ</CardTitle>
+                <p className='hidden text-sm text-slate-300 sm:mt-1 sm:block'>ภาพพอดีจอ ปุ่มตอบอยู่ด้านล่างเสมอ</p>
+              </div>
+              <Badge className='bg-white/[0.08] text-slate-100'>{phaseLabel}</Badge>
+            </div>
+
+            <div className='min-h-0 flex-1'>
               <AnimatePresence mode='wait'>
                 <motion.div
                   key={`${state.phase}-${state.roundIndex}`}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
+                  className='h-full min-h-0'
                 >
                   {loading ? (
-                    <div className='space-y-4 py-14 text-center'>
+                    <div className='flex h-full min-h-0 flex-col items-center justify-center gap-4 rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-6 text-center'>
                       <div className='text-2xl font-semibold text-white'>กำลังโหลดภาพ...</div>
-                      <Progress value={state.preloadProgress * 100} />
+                      <Progress value={state.preloadProgress * 100} className='w-full max-w-xl' />
                       <div className='font-mono text-lg text-slate-300'>{Math.round(state.preloadProgress * 100)}%</div>
                     </div>
                   ) : currentRound ? (
@@ -257,59 +259,51 @@ export function GameClient({ playerName, rounds }: { playerName: string; rounds:
                       src={currentRound.path}
                       label={imageLabel}
                       debugLabel={DEBUG_LABELS ? `${currentRound.category.toUpperCase()} · ${currentRound.filename}` : undefined}
-                      className='shadow-2xl'
+                      className='h-full border-white/10 bg-black/35 shadow-2xl'
+                      frameClassName='h-full min-h-0 aspect-auto rounded-[1.5rem]'
                     />
                   ) : null}
                 </motion.div>
               </AnimatePresence>
+            </div>
 
-              {state.phase === 'playing' ? <TimerBar secondsLeft={secondsLeft} /> : null}
-              {state.phase === 'playing' ? <GuessButtons onGuess={submitGuess} disabled={resolvedRef.current} /> : null}
-              {state.phase === 'feedback' && state.feedback ? (
-                <RoundFeedback
-                  visible
-                  correct={state.feedback.correct}
-                  points={state.feedback.points}
-                  answerLabel={answerLabel}
-                />
-              ) : null}
-            </CardContent>
-          </Card>
+            <div className='shrink-0 rounded-[1.5rem] border border-white/10 bg-slate-950/[0.82] p-2 shadow-[0_-18px_48px_rgba(2,6,23,0.26)] sm:p-3'>
+              {state.phase === 'playing' ? (
+                <div className='grid gap-3 lg:grid-cols-[0.78fr_1.22fr] lg:items-end'>
+                  <TimerBar secondsLeft={secondsLeft} durationSeconds={ROUND_SECONDS} />
+                  <GuessButtons onGuess={submitGuess} disabled={resolvedRef.current} />
+                </div>
+              ) : (
+                <div className='flex min-h-[4.75rem] items-center justify-between gap-4 text-sm text-slate-300'>
+                  <span>{loading ? 'กำลังเตรียมภาพสำหรับเกม' : phaseLabel}</span>
+                  <span className='font-mono text-slate-100'>{state.correctRounds}/{state.results.length} ถูก</span>
+                </div>
+              )}
+            </div>
 
-          <Card className='border-white/10 bg-slate-950/65'>
-            <CardHeader>
-              <CardTitle>สถานะรอบนี้</CardTitle>
-            </CardHeader>
-            <CardContent className='space-y-4'>
-              <div className='space-y-2'>
-                <div className='flex items-center justify-between text-sm text-slate-300'>
-                  <span>ความเร็ว</span>
-                  <span className='font-mono'>{formatSeconds(secondsLeft)}</span>
-                </div>
-                <TimerBar secondsLeft={secondsLeft} />
-              </div>
-              <div className='rounded-3xl border border-white/10 bg-white/5 p-4'>
-                <div className='text-xs uppercase tracking-[0.24em] text-slate-400'>เวลาเฉลี่ย</div>
-                <div className='mt-1 font-mono text-3xl font-black text-white'>{formatMs(summarizeRounds(state.results).averageResponseMs)} ms</div>
-              </div>
-              <div className='rounded-3xl border border-white/10 bg-white/5 p-4'>
-                <div className='text-xs uppercase tracking-[0.24em] text-slate-400'>แมตช์</div>
-                <div className='mt-1 text-lg text-white'>
-                  {state.correctRounds}/{state.results.length} ถูก
-                </div>
-              </div>
-              {state.phase === 'feedback' && state.feedback ? (
-                <div className={state.feedback.correct ? 'rounded-3xl border border-emerald-300/20 bg-emerald-400/10 p-4 text-emerald-100' : 'rounded-3xl border border-rose-300/20 bg-rose-500/10 p-4 text-rose-100'}>
-                  {state.feedback.correct ? 'ตอบถูก' : state.feedback.timedOut ? 'หมดเวลา' : 'ตอบผิด'}
-                </div>
-              ) : null}
-            </CardContent>
-          </Card>
-        </div>
+            {state.phase === 'feedback' && state.feedback ? (
+              <RoundFeedback
+                visible
+                correct={state.feedback.correct}
+                points={state.feedback.points}
+                answerLabel={answerLabel}
+              />
+            ) : null}
+          </CardContent>
+        </Card>
       </div>
 
       <CountdownOverlay value={state.countdown === 0 ? 'GO' : state.countdown} visible={state.phase === 'countdown'} />
       <StreakToast streak={streakToast} />
     </main>
+  )
+}
+
+function HudStat({ label, value, tone, compact }: { label: string; value: string | number; tone: string; compact?: boolean }) {
+  return (
+    <div className='rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2'>
+      <div className='text-xs uppercase tracking-[0.24em] text-slate-400'>{label}</div>
+      <div className={`${compact ? 'text-lg sm:text-xl' : 'text-2xl'} mt-1 font-mono font-black ${tone}`}>{value}</div>
+    </div>
   )
 }

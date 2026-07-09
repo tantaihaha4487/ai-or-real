@@ -9,7 +9,7 @@ export function CountdownOverlay({ value, visible }: { value: number | 'GO'; vis
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 1.04 }}
-          className='absolute inset-0 z-40 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm'
+          className='fixed inset-0 z-40 flex items-center justify-center bg-slate-950/70 backdrop-blur-sm'
         >
           <motion.div
             initial={{ y: 16, opacity: 0 }}

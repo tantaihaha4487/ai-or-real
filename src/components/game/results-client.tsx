@@ -8,7 +8,7 @@ import { ChevronRight, Save } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { formatMs, formatSeconds } from '@/lib/utils'
+import { formatMs } from '@/lib/utils'
 import type { RoundResult } from '@/lib/scoring'
 
 const storageKey = 'ai-or-human:last-run'
@@ -60,8 +60,8 @@ export function ResultsClient() {
 
   if (!run) {
     return (
-      <main className='mx-auto flex min-h-screen max-w-3xl items-center px-4 py-8'>
-        <Card className='w-full'>
+      <main className='app-grid flex min-h-screen items-center px-4 py-8'>
+        <Card className='mx-auto w-full max-w-3xl'>
           <CardHeader>
             <CardTitle>ไม่พบผลรอบก่อนหน้า</CardTitle>
             <CardDescription>กลับไปเริ่มเกมใหม่ก่อน</CardDescription>
@@ -77,17 +77,20 @@ export function ResultsClient() {
   }
 
   return (
-    <main className='mx-auto min-h-screen max-w-6xl px-4 py-6 sm:px-6 lg:px-8'>
-      <div className='grid gap-4 lg:grid-cols-[0.95fr_1.05fr]'>
-        <Card className='border-white/10 bg-slate-950/70'>
+    <main className='app-grid min-h-screen px-4 py-6 sm:px-6 lg:px-8'>
+      <div className='mx-auto grid max-w-6xl gap-4 lg:grid-cols-[0.95fr_1.05fr]'>
+        <Card className='border-cyan-100/10 bg-slate-950/[0.68]'>
           <CardHeader>
-            <Badge className='w-fit'>ผลลัพธ์</Badge>
-            <CardTitle className='text-4xl'>จบรอบแล้ว</CardTitle>
-            <CardDescription>คะแนนและความเร็วจากรอบนี้</CardDescription>
+            <Badge className='w-fit bg-cyan-300/[0.12] text-cyan-100'>ผลลัพธ์</Badge>
+            <CardTitle className='text-4xl sm:text-5xl'>จบรอบแล้ว</CardTitle>
+            <CardDescription>คะแนน ความแม่นยำ และความเร็วจากรอบนี้</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
+            <div className='rounded-[1.75rem] border border-cyan-200/15 bg-gradient-to-br from-cyan-300/[0.18] to-violet-500/10 p-5'>
+              <div className='text-sm uppercase tracking-[0.24em] text-cyan-100'>คะแนนรวม</div>
+              <div className='mt-2 font-mono text-6xl font-black text-white'>{run.score}</div>
+            </div>
             <div className='grid gap-3 sm:grid-cols-2'>
-              <Stat label='คะแนน' value={`${run.score}`} />
               <Stat label='Accuracy' value={accuracyLabel} />
               <Stat label='เวลาเฉลี่ย' value={`${formatMs(run.avgResponseMs)} ms`} />
               <Stat label='สตรีกสูงสุด' value={`${run.longestStreak}x`} />
@@ -106,7 +109,7 @@ export function ResultsClient() {
           </CardContent>
         </Card>
 
-        <Card className='border-white/10 bg-slate-950/70'>
+        <Card className='border-white/10 bg-slate-950/[0.68]'>
           <CardHeader>
             <CardTitle>รายละเอียดแต่ละรอบ</CardTitle>
             <CardDescription>กดเปิดเพื่อดูคำตอบและคะแนน</CardDescription>
@@ -136,7 +139,7 @@ export function ResultsClient() {
           </CardContent>
         </Card>
       </div>
-      <div className='mt-4 flex justify-end text-sm text-slate-400'>
+      <div className='mx-auto mt-4 flex max-w-6xl justify-end text-sm text-slate-400'>
         <Link href='/leaderboard' className='inline-flex items-center gap-1 hover:text-white'>
           ไปตารางคะแนน <ChevronRight className='h-4 w-4' />
         </Link>
@@ -147,7 +150,7 @@ export function ResultsClient() {
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
-    <div className='rounded-3xl border border-white/10 bg-white/5 p-4'>
+    <div className='rounded-3xl border border-white/10 bg-white/[0.04] p-4'>
       <div className='text-xs uppercase tracking-[0.24em] text-slate-400'>{label}</div>
       <div className='mt-2 font-mono text-2xl font-black text-white'>{value}</div>
     </div>

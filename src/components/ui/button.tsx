@@ -10,8 +10,8 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const variantStyles: Record<NonNullable<ButtonProps['variant']>, string> = {
-  default: 'bg-cyan-400 text-slate-950 shadow-neon hover:bg-cyan-300',
-  secondary: 'bg-violet-500/15 text-violet-100 border border-violet-400/30 hover:bg-violet-500/25',
+  default: 'bg-cyan-300 text-slate-950 shadow-[0_0_0_1px_rgba(103,232,249,0.22),0_18px_42px_rgba(34,211,238,0.22)] hover:bg-cyan-200',
+  secondary: 'border border-violet-300/30 bg-violet-400/[0.18] text-violet-50 hover:bg-violet-400/[0.28]',
   ghost: 'bg-transparent text-slate-100 hover:bg-white/5',
   destructive: 'bg-rose-500 text-white hover:bg-rose-400',
   outline: 'border border-white/15 bg-white/5 text-slate-100 hover:bg-white/10',
@@ -32,7 +32,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(function 
     <Comp
       ref={ref}
       className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-2xl font-medium transition-all duration-200 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50',
+        'inline-flex items-center justify-center gap-2 rounded-[1.25rem] font-semibold transition-all duration-200 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-50',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/80 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-950',
         variantStyles[variant],
         sizeStyles[size],
