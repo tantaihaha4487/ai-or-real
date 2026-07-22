@@ -15,10 +15,10 @@ const root = join(process.cwd(), 'public', 'dataset')
 function readCategory(category: Category): ManifestItem[] {
   const dir = join(root, category)
   return readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith('.svg'))
+    .filter((entry) => entry.isFile() && /\.(?:avif|gif|jpe?g|png|webp|svg)$/i.test(entry.name))
     .sort((a, b) => a.name.localeCompare(b.name))
     .map((entry) => ({
-      id: entry.name.replace(/\.svg$/i, ''),
+      id: entry.name.replace(/\.[^.]+$/, ''),
       filename: entry.name,
       category,
       path: `/dataset/${category}/${entry.name}`,
